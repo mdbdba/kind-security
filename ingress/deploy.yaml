@@ -1,3 +1,4 @@
+---
 apiVersion: v1
 kind: Namespace
 metadata:
@@ -629,3 +630,16 @@ webhooks:
     resources:
     - ingresses
   sideEffects: None
+---
+apiVersion: autoscaling/v1
+kind: HorizontalPodAutoscaler
+metadata:
+  name: nginx-deployment
+  namespace: ingress-nginx
+spec:
+  maxReplicas: 3
+  minReplicas: 1
+  scaleTargetRef:
+    kind: Deployment
+    name: nginx-deployment
+  targetCPUUtilizationPercentage: 80
